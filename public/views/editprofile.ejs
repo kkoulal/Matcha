@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="/socket.io/socket.io.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="tagify.css" rel="sylesheet"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/css/app.css">
+      </head>
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+    <div>
+
+        <nav class="navbar navbar-expand-lg navbar-light light navclass">
+    <% if (data6 != '') { %>
+    <div id="msg">
+          <img class='message' id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } else { %>
+       <div id="msg">
+          <img src="img/msgoff.png" id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } %>
+       <% if (data2 != '') { %>
+       <div id="notif"> 
+          <img class='anime' id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } else { %>
+       <div id="notif"> 
+          <img src="img/off.png" id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } %>
+         <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/history'">Your history</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/hatelist'">Your hates</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/chatlist'">Your loves</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/main'">Main page</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/research'">Research</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/editprofile'">Edit Profile</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/logout'">Log out</button>
+   </nav>
+ </div>
+    <input  type='hidden' id="userid" value="<%=user.id%>"/>
+    <div class="container" style="margin-top: 2vh;margin-bottom: 0vh;">
+        <form style="margin-top:11%;" class="formedit" method="post" action="" > 
+                <a class="buttonmain" style="font-size:0.5em" onclick="if(confirm('These action will remove all your data'))location.href = '/remove'">Remove your account</a>
+                <div class="rowi">
+                    <div class="columni">
+                          <input  style="margin-left: -25%; width:120%;" type="text" name="username" value="<%= data[0].username%>"/>
+                        </div>
+                        <div class="columni">
+                          <input  style="margin-right: -25%; width:120%;"  type="text" name="age" value="<%= data[0].age%>"/>
+                        </div>
+                      </div>
+                
+                <div class="rowi">
+                    <div class="columni">
+                          <input  style="margin-left: -25%; width:120%;"  type="text" name="fname" value="<%= data[0].fname%>"/>
+                        </div>
+                        <div class="columni">
+                          <input  style="margin-right: -25%; width:120%;"  type="text" name="lname" value="<%= data[0].lname%>"/>
+                        </div>
+                      </div>
+                      <div class="rowi">
+                    <div class="columni">
+                          <input  style="margin-left: -25%; width:120%;"  type="email" name="email" value="<%= data[0].email%>"/>
+                           </div>
+                        <div class="columni">
+                          <input  style="margin-right: -25%; width:120%;"  type="password" name="password" placeholder="type a new password ... (Optional)" "/>
+                           </div>
+                      </div>
+            <table style="width:75%;margin-left:0%;margin-bottom:2%;margin-top:2%;">
+                <tr class="">
+
+                    <th class="th1">Gender</th>
+                    <th><div style="margin-left: 1%;" class="gender">
+                        <% if (data[0].gender == 'male') { %>
+                        <input class="radio1" type='radio' value='male' id='male1'  name='gender' checked="checked">
+                        <% } else { %>
+                        <input class="radio1" type='radio' value='male' id='male1'  name='gender'>
+                        <% } %>
+                        <label for='male1'>Male</label>
+                        <% if (data[0].gender == 'female') { %>
+                        <input class="radio1" type='radio' value='female' id='female1' name='gender'  checked="checked">
+                        <% } else { %>
+                        <input class="radio1" type='radio' value='female' id='female1' name='gender' >
+                        <% } %>
+                        <label style="margin-right: -70%;" for='female1'>Female</label>
+                    </div>
+                </th>
+            </tr>
+        </table>
+        
+        
+        <table style="width:75%;margin-left:0%;margin-bottom: 2%;">
+            <tr class="tr">
+                <th class="th1">Sexual preferences</th>
+                <th><div class="gender">
+                        <% if (data[0].sp == 'male') { %>
+                    <input class="radio2" type='radio' value='male' id='male2' name='sp'  checked="checked">
+                    <% } else { %>
+                        <input class="radio2" type='radio' value='male' id='male2' name='sp'>
+                        <% } %>
+                    <label for='male2'>Male</label>
+                    <% if (data[0].sp == 'female') { %>
+                    <input class="radio2" type='radio' value='female' id='female2' name='sp' checked="checked">
+                    <% } else { %>
+                        <input class="radio2" type='radio' value='female' id='female2' name='sp'>
+                        <% } %>
+                    <label style="margin-right: -125%;" for='female2'>Female</label>
+                    <% if (data[0].sp == 'both') { %>
+                    <input class="radio2" type='radio' value='both' id='bio3'  name='sp' checked="checked">
+                    <% } else { %>
+                        <input class="radio2" type='radio' value='both' id='bio3'  name='sp' >
+                        <% } %>
+                    <label for='bio3'>Both</label>
+                </div>
+            </th>
+        </tr> 
+    </h3>
+</table>
+<h1 class="th3" style="width:75%;">Biography</h1>
+<textarea name='bio' class="txtarea"  style=" outline: none; border-radius:6px 6px 6px 6px;" rows="2" cols="100" ><%= data[0].bio %></textarea>
+<h1 class="th3" style="width:75%; margin-top: 2%;">Tags</h1>
+    <h1 style="color:red;font-size:100%;width:75%;">Please tap space after the tags before submit</h1>
+<div class="tag-container">
+    <input name='tag' class="taga" value="<%= data[0].tag%>"/>  
+</div>
+<input type='hidden' id='hidden' name='tagtoimport'/>
+<h1 class="th4" style="width:75%;">Geolocation</h1>
+                    <input style="width:75%;" value="<%= data[0].lat%>,<%= data[0].lon%>" name='cor'/>
+            <span class="error"><%= message %></span>
+            <button type="submit">Next</button>
+        </form>
+    </div>
+    <% include footer.ejs %>
+    <script type="text/javascript" src="js/editprofile.js"></script>
+
+</body>
+</html>
+<script type="text/javascript" src="js/socket.js"></script>
+<script>
+
+
+  var data = new Array();
+
+  $.ajax({
+                url: '/autotag/',
+                  processData: false,
+                  contentType: false,
+                  type: 'GET',
+                  success: function (dat){
+
+                  dat.forEach(el => {
+                    
+                   data.push({"value":el})
+                  })
+                 
+
+                    }
+
+                  });
+
+function getData(){
+    return   data;
+}
+   $(".taga").autocomplete({
+                      select: function(evt, ui) {
+                    },
+                     source: getData()
+                });
+
+
+
+  </script>

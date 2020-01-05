@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="tagify.css" rel="sylesheet"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+	
+	 <nav class="navbar navbar-expand-lg navbar-light navclass">
+    <% if (data6 != '') { %>
+    <div id="msg">
+        <img class='message' id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } else { %>
+       <div id="msg">
+        <img src="img/msgoff.png" id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } %>
+       <% if (data2 != '') { %>
+       <div id="notif"> 
+        <img class='anime' id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } else { %>
+       <div id="notif"> 
+        <img src="img/off.png" id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } %>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/history'">Your history</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/hatelist'">Your hates</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/chatlist'">Your loves</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/main'">Main page</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/research'">Research</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/editprofile'">Edit Profile</button>
+        <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/logout'">Log out</button>
+     </nav>
+
+  <% if (data.length > 0) { %>
+  <div class="container12" style="margin-top: 17vh;">
+    <form style="height: 24%;" method="POST" id="rebloform">
+      <input type='hidden' id="idofpictoreport" name="reported"/>
+      <input type='hidden' id="idofpictoblock" name="blocked"/>
+      <div class="avatar-upload">
+        <div class="avatar-report">
+          <input onclick="report();" type="submit" id="foreport"/>
+          <label data-title='click to report <%= data[0].username %>' for="foreport"></label>
+        </div>
+        <div class="avatar-block">
+          <input onclick="block();" type="submit" id="forblock"/>
+          <label data-title='click to block <%= data[0].username %>' for="forblock"></label>
+        </div>
+        <div style="height: 90%;" class="avatar-preview">
+          <% if ((data[0].picture == "img/robot.png") || (typeof data[0].picture == undefined)) { %>
+          <img style="margin-left:2%" src="img/robot.png">
+          <% } else {%>
+          <img style="margin-left:2%" src="<%= data[0].picture %>"> 
+          <% } %>
+        </div>
+      </div>
+    </form>
+ <% if(data4 != undefined) { %>
+       <h1 style="margin-bottom: 5%; margin-top: -2%;color:blue;">Like recieved</h1>
+       <% } else { %>
+       <h1></h1>
+      <% } %>
+    <div class="rowi">
+      <% var i = 1; %>
+  <% while (i < data.length) {%>
+  <div class="columni">
+  <div class="avatar-upload">
+      <div class="avatar-preview">
+        <% if (typeof data[i] == undefined) { %>
+        <img src="img/robot.png">
+        <% } else {%>
+        <img  src="<%= data[i].picture %>">
+        <% } %>
+      </div>
+    </div>
+  </div>
+      <% i++; } %>
+    </div>
+    <h1 style="margin-bottom: 7%;"><%= data[0].username %></h1> 
+          <input  type='hidden' id="idofusermsgreceive" value="<%=user%>"/>
+          <input  type='hidden' id="idofusernotifreceive" value="<%=user2%>"/>
+
+    <% if (data3 == '') { %>
+    <h1 style="margin-bottom: 7%;color:#FF4B2B;">The user never connected</h1>
+    <% } else if (data3[0].connected == 0) { %>
+    <h1 style="margin-bottom: 7%;color:red;">Last seen: <%= data3[0].datefield %></h1>
+    <% } else if (data3[0].connected == 1) { %>
+    <h1 style="margin-bottom: 7%;color:#90ee90;">Connected</h1>
+    <% } %>
+    <% if (data[0].tokenmatch != undefined) { %>
+    <h1 style="margin-bottom: 5%; margin-top: -5%;"><a class="auser1" href="/chatroom?token=<%= data[0].tokenmatch %>">Click here to Chat</a></h1>
+    <% } %>
+    <div class="rowi">
+      <div class="columni">
+        <h1>Name:</h1>
+      </div>
+      <div class="columni">
+        <h1><%= data[0].lname +' ' + data[0].fname %></h1>
+      </div>
+    </div>
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Gender:</h1>
+      </div>
+      <div class="columni">
+        <% if (data[0].gender == 'male'){ %>
+        <img style="margin-left:45%;" src="img/male.png">
+        <% } else if (data[0].gender == 'female') { %>
+        <img style="margin-left:45%;" src="img/female.png">
+        <% } %>
+      </div>
+    </div>
+
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Age:</h1>
+      </div>
+      <div class="columni">
+        <h1><%= data[0].age%></h1>
+      </div>
+    </div>
+
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Tags:</h1>
+      </div>
+      <div class="columni">
+        <div class="rowi">
+          <% var tags = data[0].tag;
+          for(var j = 0; j < tags.length; j++) { %>
+          <div class="columni">
+
+            <p style="  box-shadow:
+            2px 2px 9px  #FFFFFF; border-radius: 20px; text-align:center; margin-top:9%;"><%= tags[j]; %></p>
+          </div>
+          <% }%>
+        </div>
+      </div>
+    </div>
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Location:</h1>
+      </div>
+      <div class="columni">
+        <a href="https://www.google.com/maps/@<%=data[0].lat%>,<%=data[0].lon%>,15z"target="_blank"><img  style="margin-left:45%;" src="img/geo.png"></a>
+      </div>
+    </div>
+    <div class="rowi">
+      <p style="margin-left: 69%;margin-top:0%;"><%=data[0].km%> km away</p>
+    </div>
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Biography:</h1>
+      </div>
+      <div class="columni">
+        <p style="  box-shadow:2px 2px 9px  #FFFFFF;margin-top:9% border-radius: 20px; text-align:center; margin-top:9%;"><%= data[0].bio%></p>
+      </div>
+    </div>
+
+    <div class="rowi">
+
+      <div class="columni">
+        <h1>Rating:</h1>
+      </div>
+      <div class="columni">
+        <% if (data[0].rating == '0'){ %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/0.png">
+        <% } else if (data[0].rating == 1){ %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/1.png">
+        <% } else if (data[0].rating == 2) { %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/2.png">
+        <% } else if (data[0].rating == 3){ %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/3.png">
+        <% } else if (data[0].rating == 4) { %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/4.png">
+        <% } else if (data[0].rating == 5) { %>
+        <img style="width:50%; height:50%;margin-left:25%;" src="img/5.png">
+        <% } %>
+      </div>
+    </div>
+    <% if (data[0].user_id != user) { %>
+    <form style="height:20%;" method='POST'>
+
+      <div class="rowi" style="margin-right:24%;">
+        <div class="columni" style="margin-left:26%;margin-right:80px;margin-top: 10px">
+          <% if (data[0].likenum == 1) { %>
+          <img id="image" typ="1" onclick="likeme()" class="centerimg2" style="width:20%;" src="img/like.png">
+          <% } else if (data[0].likenum == 0) {%>
+          <img id="image" typ="0"  onclick="likeme()" class="centerimg2" style="width:20%;" src="img/unlike.png"> 
+          <% } else { %>
+          <img id="image" typ="0"  onclick="likeme()" class="centerimg2" style="width:20%;" src="img/unlike.png">
+          <% } %>
+        </div>
+        <div class="columni" style="margin-left:-13%;">
+          <input name="rate" >
+        </div>
+        <div class="columni">
+          <h1 style="margin:0 0 0 0;width:20px;margin-top: 8px">/5</h1>
+        </div>
+      </div>
+      <input type='hidden' id="likeid" name="like"/>
+      <button type="submit">Submit</button>
+    </form>
+    <% } %>
+
+
+  </div>
+  <% } else { %>
+  <h1 style="margin-bottom: 5%; margin-top: -5%;">Sorry, there is no user has this id.</h1>
+  <% } %>
+  <% include footer.ejs %>
+
+</body>
+</html>
+<script type="text/javascript">
+  var idmsg = $('#idofusermsgreceive').val();
+  var idnotif = $('#idofusernotifreceive').val();
+  var socket = io.connect();
+  socket.emit('send notif', idnotif);
+socket.on('notif', function(data){
+  if (idmsg == data.id)
+    {
+    $('#off').remove('anime');
+    $('#off').addClass('anime');
+    $('#off').attr('onclick', 'location.href="/notif"')}
+  });
+socket.on('msg', function(data){
+  if(idmsg == data.id)
+    {
+    $('#msg').remove('message');
+    $('#msg').addClass('message');
+    $('#msg').attr('onclick', 'location.href="/notif"')}
+  });
+   
+  function likeme(){
+    var type = document.getElementById('image').getAttribute('typ');
+    if(type == 0)
+    {
+      document.getElementById('image').src = "img/like.png";
+      document.getElementById('likeid').value = "1";
+      document.getElementById('image').setAttribute('typ', '1');
+    }
+    else
+    {
+      document.getElementById('image').src ="img/unlike.png";
+      document.getElementById('likeid').value = "0";
+      document.getElementById('image').setAttribute('typ', '0');
+    }
+  }
+  function report()
+  {
+    if (typeof data == 'undefined')
+      document.getElementById('idofpictoreport').value = '';
+    
+  else
+    document.getElementById('idofpictoreport').value = "<%= data[0].user_id %>";
+  }
+  function block()
+  {
+    if (typeof data == 'undefined')
+      document.getElementById('idofpictoblock').value = '';
+    
+  else
+    document.getElementById('idofpictoblock').value = "<%= data[0].user_id %>";
+  }
+</script>

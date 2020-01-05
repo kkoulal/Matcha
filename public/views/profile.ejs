@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<link rel="stylesheet" href="css/app.css">
+	<link href="tagify.css" rel="sylesheet"/>
+	<link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+	<div class="rowmain">
+		
+		<div class="column">
+			 <button class="buttonmain" style="font-size:10%" onclick="location.href = '/logout'">Log out</button>			
+		</div>
+	</div>
+	<div class="container">
+		<form method="post" action="" > 
+			<table style="width:75%;margin-left:0%;margin-bottom:2%;margin-top:2%;">
+				<tr class="">
+					<th class="th1">Gender<sup style="color:#FF4B2B;">*</sup></th>
+					<th><div style="margin-left: 1%;" class="gender">
+						<input class="radio1" type='radio' value='male' id='male1'  name='gender'>
+						<label for='male1'>Male</label>
+						<input class="radio1" type='radio' value='female' id='female1' name='gender'>
+						<label style="margin-right: -70%;" for='female1'>Female</label>
+					</div>
+				</th>
+			</tr>
+		</table>
+		<table style="width:75%;margin-left:0%;margin-bottom: 2%;">
+			<tr class="tr">
+				<th class="th1">Sexual preferences<sup style="color:#FF4B2B;">*</sup></th>
+				<th><div class="gender">
+					<input class="radio2" type='radio' value='male' id='male2'  name='sp'>
+					<label for='male2'>Male</label>
+					<input class="radio2" type='radio' value='female' id='female2' name='sp'>
+					<label style="margin-right: -125%;" for='female2'>Female</label>
+					<input class="radio2" type='radio' value='both' id='bio3'  name='sp'>
+					<label for='bio3'>Both</label>
+				</div>
+			</th>
+		</tr> 
+</table>
+<table style="width:75%;margin-left:0%;margin-bottom:2%;margin-top:2%;">
+	<tr class="">
+		<input type='hidden' id='myip1' name='lat'>
+		<input type='hidden' id='myip2' name='lon'>
+		<th class="th1">Age<sup style="color:#FF4B2B;">*</sup></th>
+		<th><div style="margin-left: 15%; width:91%;" class="gender">
+			<input name="age">
+			
+		</div>
+	</th>
+</tr>
+</table>
+<h1 class="th3" style="width:75%;">Biography<sup style="color:#FF4B2B;">*</sup></h1>
+<textarea name='bio' placeholder="Biography..." class="txtarea" style=" outline: none; border-radius:6px 6px 6px 6px;" rows="8" cols="100"></textarea>
+<h1 class="th3" style="width:75%; margin-top: 2%;">Tags<sup style="color:#FF4B2B;">*</sup></h1>
+<h1 style="color:red;font-size:100%;width:75%;">Please tap space after the tags before submit</h1>
+<div class="tag-container">
+
+	<input placeholder="Please tap space after each tag" class="taga" name='tag'/>  
+</div>
+<input type='hidden' id='hidden' name='tagtoimport'/>
+			<h1 class="th4" style="width:75%;">Geolocation</h1>
+					<input style="width:75%;" placeholder='Get your position through google maps and paste it here...' name='cor'/>
+			<span class="error"><%= message %></span>
+			<button type="submit">Next</button>
+		</form>
+	</div>
+	<% include footer.ejs %>
+
+	<script type="text/javascript" src="js/profile.js"></script>
+	<script type="text/javascript">
+		 var data = new Array();
+
+  $.ajax({
+                url: '/autotag/',
+                  processData: false,
+                  contentType: false,
+                  type: 'GET',
+                  success: function (dat){
+
+                  dat.forEach(el => {
+                    
+                   data.push({"value":el})
+                  })
+                 
+
+                    }
+
+                  });
+
+function getData(){
+    return   data;
+}
+   $(".taga").autocomplete({
+                      select: function(evt, ui) {
+                    },
+                     source: getData()
+                });
+	</script>
+</body>
+</html>

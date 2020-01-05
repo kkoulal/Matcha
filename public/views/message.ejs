@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="/socket.io/socket.io.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="tagify.css" rel="sylesheet"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+	
+	<% include navbar.ejs %>
+	<input  type='hidden' id="userid" value="<%=user%>"/>
+	<% if (typeof data != 'undefined') { %>
+	<div class="container12"  style="margin-top: 18vh;margin-bottom: 5vh;">
+	<% var i = 0; while (data[i]) { %>
+	<h1 style="margin-bottom: 7%;"><%= data[i].datefield %> ==> <a class="auser0" href="/user?id=<%= data[i].user_send %>"><%= data[i].username %></a><%= data[i].jomla %></h1>
+	<hr style="border: 1px solid #FF4B2B;">
+	<% i++;}} else { %>
+	<h1>There is no messages for you</h1>
+	<% } %>
+	</div>
+	<% include footer.ejs %>
+	
+</body>
+</html>
+<script type="text/javascript" src="js/socket.js"></script>

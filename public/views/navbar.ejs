@@ -1,0 +1,27 @@
+ <nav class="navbar navbar-expand-lg navbar-light navclass">
+ <%  if (data6 != '') { %>
+ <div id="msg">
+       <img class='message' id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+    </div>
+    <% } else { %>
+    <div id="msg">
+       <img src="img/msgoff.png" id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+    </div>
+    <% } %>
+    <% if (data2 != '') { %>
+    <div id="notif"> 
+       <img class='anime' id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+    </div>
+    <% } else { %>
+    <div id="notif"> 
+       <img src="img/off.png" id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+    </div>
+    <% } %>
+      <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/history'">Your history</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/hatelist'">Your hates</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/chatlist'">Your loves</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/main'">Main page</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/research'">Research</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/editprofile'">Edit Profile</button>
+       <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/logout'">Log out</button>
+</nav>

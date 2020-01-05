@@ -1,0 +1,97 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="/socket.io/socket.io.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link href="tagify.css" rel="sylesheet"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/css/app.css">
+	<style>
+	body {
+		margin-top: 5%;
+	}
+</style>
+</head>
+
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+	<div>
+		<nav class="navbar navbar-expand-lg navbar-light navclass">
+			<% if (data2 != '') { %>
+			<div id="notif"> 
+				<img class='anime' id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+			</div>
+			<% } else { %>
+			<div id="notif"> 
+				<img src="img/off.png" id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+			</div>
+			<% } %>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/history'">Your history</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/hatelist'">Your hates</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/chatlist'">Your loves</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/main'">Main page</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/research'">Research</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/editprofile'">Edit Profile</button>
+			<button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/logout'">Log out</button>
+		</nav>
+	</div>
+	<div class="container">
+		<input type="hidden" id="userid" value="<%=user%>"/>
+		<div id="messageArea" class="row">
+			<div class="col-md-8">
+				<div class="container12" id="chat" style="left: 0;right: 0;">
+					<% var i = 0; while (data[i]) { if (data[i].sender == user) { %>
+					<h1 id="me" class="from-me"><%= data[i].msg %></h1>
+					<% } else { %>
+					<h1 id="them" class="from-them" style="margin-left:50%;word-wrap:break-word;"><%= data[i].msg %></h1>
+					<%} i++; } %>
+				</div>
+				<form id="messageForm">
+					<script type="text/javascript">
+						function isRTL(s){           
+							var ltrChars    = 'A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF'+'\u2C00-\uFB1C\uFDFE-\uFE6F\uFEFD-\uFFFF',
+							rtlChars    = '\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC',
+							rtlDirCheck = new RegExp('^[^'+ltrChars+']*['+rtlChars+']');
+
+							return rtlDirCheck.test(s);
+						};
+						function	addEmoj(e)
+						{
+							if(!isRTL($('#message').val()))
+								$('#message').val($('#message').val() + " " + e + " ");
+							else
+								$('#message').val(e + " " + $('#message').val() + " ");
+						}
+					</script>
+					<div   style="left: 0;right: 0;">
+						<label style="color:red">Enter Your Message</label>
+						<div class="row">
+							<div class="col-sm-8" style="padding: 0 0 0 0">
+								<input class="form-control" name='msg' id="message">
+							</div>
+							<div class="col-sm-2" style="margin-top: 7px;margin-left:10px;padding: 0 0 0 0">
+								<select style="width:50px;height:40px;font-size: 20px" onchange="addEmoj(this.value)">
+									<option selected="true" disabled="disabled">&#128512</option>
+									<option value=":)">&#128512</option>
+									<option value="xD">&#x1F606</option>
+									<option value="=)">&#x1F601</option>
+									<option value="8)">&#x1F60E</option>
+									<option value=":(">&#x1F615</option>
+									<option value=":@">&#x1F621</option>
+									<option value="<3">&#x2764</option>
+								</select>	
+							</div>
+						</div>
+						<br />
+						<input type='hidden' id='to' name='too' />
+						<input type="submit" id="send" class="btn btn-primary" value="Send Message"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/chatroom.js"></script>
+</body>
+</html>

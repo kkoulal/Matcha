@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="/socket.io/socket.io.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="tagify.css" rel="sylesheet"/>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+   <% if (data.length > 0) { %>
+ <% include navbar.ejs %>
+  
+  <div  class="container12" style="margin-top: 20vh;margin-bottom: 0vh;">
+    <input  type='hidden' id="userid" value="<%=user.id%>"/>
+  <% var i = 0; %>
+  <% while (i < data.length) {%>
+  <div>
+    <h1><a class="auser" href="http://localhost:4000/user?id=<%= data[i].id %>"><%= data[i].username %></a></h1>
+    <div style="align-items: center;" >
+    <div class="rowi">
+          <div class="columni">
+            <h1>Name:</h1>
+          </div>
+          <div class="columni">
+            <h1><%= data[i].lname +' ' + data[i].fname %></h1>
+          </div>
+    </div>
+    <div class="rowi">
+        <div class="columni">
+          <h1>Gender:</h1>
+        </div>
+        <div class="columni">
+            <% if (data[i].gender == 'male'){ %>
+              <img style="margin-left:45%;" src="img/male.png">
+            <% } else if (data[i].gender == 'female') { %>
+              <img style="margin-left:45%;" src="img/female.png">
+            <% } %>
+        </div>
+    </div>
+    <div class="rowi">
+        <div class="columni">
+          <h1>Email:</h1>
+        </div>
+        <div class="columni">
+          <h1><%= data[i].email%></h1>
+        </div>
+  </div>
+          <div class="rowi">
+              <div class="columni">
+                <h1>Age:</h1>
+              </div>
+              <div class="columni">
+                <h1><%= data[i].age%></h1>
+              </div>
+        </div>
+        <div class="rowi">
+            <div class="columni">
+              <h1>Tags:</h1>
+            </div>
+            <div class="columni">
+                <div class="rowi">
+              <% var tags = data[i].tag.split(',');
+              for(var j = 0; j < tags.length; j++) { %>
+                <div class="columni">       
+              <p style="  box-shadow:
+              2px 2px 9px  #FFFFFF; border-radius: 20px; text-align:center; margin-top:9%;"><%= tags[j]; %></p>
+                </div>
+              <% }%>
+              </div>
+            </div>
+        </div>
+        <div class="rowi">
+            <div class="columni">
+              <h1>Location:</h1>
+            </div>
+            <div class="columni">
+              <a href="https://www.google.com/maps/@<%=data[i].lat%>,<%=data[i].lon%>,15z"target="_blank"><img  style="margin-left:45%;" src="img/geo.png"></a>
+            </div>
+      </div>
+       <div class="rowi">
+        <p style="margin-left: 69%;margin-top:0%;"><%=data[i].km%> km away</p>
+       </div>
+      <div class="rowi">
+          <div class="columni">
+            <h1>Biography:</h1>
+          </div>
+          <div class="columni">
+            <p style="  box-shadow:2px 2px 9px  #FFFFFF;margin-top:9% border-radius: 20px; text-align:center; margin-top:9%;"><%= data[i].bio%></p>
+          </div>
+    </div>
+    <div class="rowi">
+        <div class="columni">
+          <h1>Rating:</h1>
+        </div>
+        <div class="columni">
+            <% if (data[i].rating == '0'){ %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/0.png">
+            <% } else if (data[i].rating == 1){ %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/1.png">
+            <% } else if (data[i].rating == 2) { %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/2.png">
+            <% } else if (data[i].rating == 3){ %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/3.png">
+            <% } else if (data[i].rating == 4) { %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/4.png">
+            <% } else if (data[i].rating == 5) { %>
+              <img style="width:50%; height:50%;margin-left:25%;" src="img/5.png">
+            <% } %>
+        </div>
+  </div>
+    </div>
+  </div>
+  <br>
+  <hr style="border: 1px solid #FF4B2B;">
+  <% i++; } %>
+  </div>
+
+ <div style="padding-bottom:10%;" class="btn-group" role="group" aria-label="Basic example">
+  <button type="button" onclick="putvalue('age')" class="btn btn-warning buttonmain">Age</button>
+  <button type="button" onclick="putvalue('km')" class="btn btn-warning buttonmain">Distance</button>
+  <button type="button" onclick="putvalue('rating')" class="btn btn-warning buttonmain">Rating</button>
+  <button type="button" onclick="putvalue('numcommas')" class="btn btn-warning buttonmain">Common tags</button>
+</div>
+  <form style="z-index: 999;height: 13%;" method="POST">
+    <input type='hidden' name="sort" id="sortme"/>
+   <div style="margin-bottom: 0%;"class="rowi">
+        <div class="columni">
+           <h1>Average age:</h1>
+        </div>
+        <div class="columni">
+          <input placeholder="14 => 100" name="age">
+            </div>
+             <div class="columni">
+           <h1>Average km:</h1>
+        </div>
+        <div class="columni">
+          <input type="" name="km">
+            </div>
+             <div class="columni">
+           <h1>Rating:</h1>
+        </div>
+        <div class="columni">
+          <input placeholder="0 => 5" type="" name="rating">
+            </div>
+             <div class="columni">
+           <h1>Tag:</h1>
+        </div>
+        <div class="columni" >
+          <input placeholder="type 1 tag" class="tag" type="" name="tag" >
+            </div>
+    </div>
+    <span class="error" style="margin-bottom: 1%"><%= message %></span>
+    <button style="margin-bottom: 12%" type="submit">Filter</button>
+ 
+</form>
+ <% } else { %>
+ <% include navbar.ejs %>
+    <% include nomain.ejs %>
+  <% } %>
+
+  <% include footer.ejs %>
+</body>
+</html>
+<script type="text/javascript" src="js/socket.js"></script>
+<script>
+  function putvalue(val){
+    $('#sortme').val(val);
+  }
+
+  var data = new Array();
+
+  $.ajax({
+                url: '/autotag/',
+                  processData: false,
+                  contentType: false,
+                  type: 'GET',
+                  success: function (dat){
+
+                  dat.forEach(el => {
+                    
+                   data.push({"value":el})
+                  })
+                 
+
+                    }
+
+                  });
+
+function getData(){
+    return   data;
+}
+   $(".tag").autocomplete({
+                      select: function(evt, ui) {
+                    },
+                     source: getData()
+                });
+
+   
+
+  </script>

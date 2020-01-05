@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="/socket.io/socket.io.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="tagify.css" rel="sylesheet"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/css/app.css">
+      </head>
+<body style="background-image: url('img/particle.png');background-repeat: no-repeat fixed 100%;background-size: cover;">
+<div>
+
+         <nav class="navbar navbar-expand-lg navbar-light light navclass">
+    <% if (data6 != '') { %>
+    <div id="msg">
+          <img class='message' id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } else { %>
+       <div id="msg">
+          <img src="img/msgoff.png" id="msg" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/message'">  
+       </div>
+       <% } %>
+       <% if (data2 != '') { %>
+       <div id="notif"> 
+          <img class='anime' id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } else { %>
+       <div id="notif"> 
+          <img src="img/off.png" id="off" style="height:42px;width:42px;font-size:10%;" onclick="location.href='/notif'">     
+       </div>
+       <% } %>
+         <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/history'">Your history</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/hatelist'">Your hates</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/chatlist'">Your loves</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/main'">Main page</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/research'">Research</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/editprofile'">Edit Profile</button>
+          <button class="buttonmain" style="font-size:0.5em" onclick="location.href = '/logout'">Log out</button>
+   </nav>
+ </div>
+	<div class="containerpics" style="margin-top: 10vh;margin-bottom: 0vh;">
+		<form action="" method="POST" id="picform" enctype='multipart/form-data'>
+			<% if (!data[0] || data == "img/robot.png") { %>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 50%; margin-bottom: 9%;" src="img/robot.png">
+			<% } else if (data[0] && data[0].profilepicid == 1) {%>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 70%; margin-bottom: 9%;" src="<%= data[0].picture %>"> 
+			<% } else if (data[1] && data[1].profilepicid == 1) {%>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 70%; margin-bottom: 9%;" src="<%= data[1].picture %>"> 
+			<% } else if (data[2] && data[2].profilepicid == 1) {%>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 50%; margin-bottom: 9%;" src="<%= data[2].picture %>"> 
+			<% } else if (data[3] && data[3].profilepicid == 1) {%>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 50%; margin-bottom: 9%;" src="<%= data[3].picture %>"> 
+			<% } else if (data[4] && data[4].profilepicid == 1) {%>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 50%; margin-bottom: 9%;" src="<%= data[4].picture %>"> 
+			<% } else { %>
+			<img style="max-width:30%; max-height:15%; padding-top:1%;border-radius: 50%; margin-bottom: 9%;" src="img/robot.png">
+			<% } %>
+			<input type="hidden" id="idofpictochoose" name="choose"/>
+			<input type="hidden" id="idofpictoremove" name="remove"/>
+			<input name="pic" id="uploadit" type="file" accept="image/png,image/gif,image/jpeg"/>
+			<div class="rowi" id="afterpost2">
+				<% if (data[0]) { %>
+				<div class="avatar-upload">
+					<div class="avatar-selected">
+							<input onclick="chooseme0();window.location.reload(true);" type="submit" id="imagechosen0" />
+							<label data-title='click to choose it as the profile picture' for="imagechosen0"></label>
+					</div>
+					<div class="avatar-edit">
+										<input onclick="removeme0()" type="submit" id="imageRemove0" />
+										<label data-title='click to remove it' for="imageRemove0"></label>
+					</div>
+					<div class="avatar-preview">
+											<% if (!data[0] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[0].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } else {%>
+				<div class="avatar-upload">
+					<div class="avatar-preview">
+											<% if (!data[0] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[0].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } %>
+				<% if (data[1]) { %>
+				<div class="avatar-upload">
+					<div class="avatar-selected">
+							<input onclick="chooseme1();window.location.reload(true);" type="submit" id="imagechosen1" />
+							<label data-title='click to choose it as the profile picture' for="imagechosen1"></label>
+					</div>
+					<div class="avatar-edit">
+										<input onclick="removeme1()" type="submit" id="imageRemove1" />
+										<label data-title='click to remove it' for="imageRemove1"></label>
+					</div>
+					<div class="avatar-preview">
+											<% if (!data[1] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[1].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } else {%>
+				<div class="avatar-upload">
+					<div class="avatar-preview">
+											<% if (!data[1] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[1].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } %>
+				<% if (data[2]) { %>
+				<div class="avatar-upload">
+					<div class="avatar-selected">
+							<input onclick="chooseme2();window.location.reload(true);" type="submit" id="imagechosen2" />
+							<label data-title='click to choose it as the profile picture' for="imagechosen2"></label>
+					</div>
+					<div class="avatar-edit">
+										<input onclick="removeme2()" type="submit" id="imageRemove2" />
+										<label data-title='click to remove it' for="imageRemove2"></label>
+					</div>
+					<div class="avatar-preview">
+											<% if (!data[2] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[2].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } else {%>
+				<div class="avatar-upload">
+					<div class="avatar-preview">
+											<% if (!data[2] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[2].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } %>
+				<% if (data[3]) { %>
+				<div class="avatar-upload">
+					<div class="avatar-selected">
+							<input onclick="chooseme3();window.location.reload(true);" type="submit" id="imagechosen3" />
+							<label data-title='click to choose it as the profile picture' for="imagechosen3"></label>
+					</div>
+					<div class="avatar-edit">
+										<input onclick="removeme3()" type="submit" id="imageRemove3" />
+										<label data-title='click to remove it' for="imageRemove3"></label>
+					</div>
+					<div class="avatar-preview">
+											<% if (!data[3] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[3].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } else {%>
+				<div class="avatar-upload">
+					<div class="avatar-preview">
+											<% if (!data[3] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[3].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } %>
+				<% if (data[4]) { %>
+				<div class="avatar-upload">
+					<div class="avatar-selected">
+							<input onclick="chooseme4();window.location.reload(true);" type="submit" id="imagechosen4" />
+							<label data-title='click to choose it as the profile picture' for="imagechosen4"></label>
+					</div>
+					<div class="avatar-edit">
+										<input onclick="removeme4()" type="submit" id="imageRemove4" />
+										<label data-title='click to remove it' for="imageRemove4"></label>
+					</div>
+					<div class="avatar-preview">
+											<% if (!data[4] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[4].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } else {%>
+				<div class="avatar-upload">
+					<div class="avatar-preview">
+											<% if (!data[4] || data == "img/robot.png") { %>
+											<img id="imagePreview" src="img/robot.png">
+											<% } else {%>
+											<img id="imagePreview" src="<%= data[4].picture %>"> <% } %>
+					</div>
+				</div>
+				<% } %>
+			</div>
+			<input type='hidden' id="userid" value="<%=user%>"/>
+			<span class="error" id="errorM"><%= message %></span>
+			<div class="rowi" id="afterpost">
+				<div class="columni">
+					<button type="submit">Save</button>
+				</div>
+				<div class="columni">
+					<button type="button" onclick="window.location='/main';">Finish</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<% include footer.ejs %>
+</body>
+</html>
+<script type="text/javascript"></script>
+<script type="text/javascript" src="js/editprofilepic.js"></script>
+<script type="text/javascript">
+function removeme0(){
+		<% if (!data[0]) { %>
+			document.getElementById("idofpictoremove").value = "";
+		<% } else { %>
+			document.getElementById("idofpictoremove").value = "<%= data[0].id %>";
+		<% } %>
+	}
+	function removeme1(){
+		<% if (!data[1]) { %>
+			document.getElementById("idofpictoremove").value = "";
+		<% } else { %>
+			document.getElementById("idofpictoremove").value = "<%= data[1].id %>";
+		<% } %>
+	}
+	function removeme2(){
+		<% if (!data[2]) { %>
+			document.getElementById("idofpictoremove").value = "";
+		<% } else { %>
+			document.getElementById("idofpictoremove").value = "<%= data[2].id %>";
+		<% } %>
+	}
+	function removeme3(){
+		<% if (!data[3]) { %>
+			document.getElementById("idofpictoremove").value = "";
+		<% } else { %>
+			document.getElementById("idofpictoremove").value = "<%= data[3].id %>";
+		<% } %>
+	}
+	function removeme4(){
+		<% if (!data[4]) { %>
+			document.getElementById("idofpictoremove").value = "";
+		<% } else { %>
+			document.getElementById("idofpictoremove").value = "<%= data[4].id %>";
+		<% } %>
+	}
+	function chooseme0(){
+		<% if (!data[0]) { %>
+			document.getElementById("idofpictochoose").value = "";
+		<% } else { %>
+			document.getElementById("idofpictochoose").value = "<%= data[0].id %>";
+		<% } %>
+	}
+	function chooseme1(){
+		<% if (!data[1]) { %>
+			document.getElementById("idofpictochoose").value = "";
+		<% } else { %>
+			document.getElementById("idofpictochoose").value = "<%= data[1].id %>";
+		<% } %>
+	}
+	function chooseme2(){
+		<% if (!data[2]) { %>
+			document.getElementById("idofpictochoose").value = "";
+		<% } else { %>
+			document.getElementById("idofpictochoose").value = "<%= data[2].id %>";
+		<% } %>
+	}
+	function chooseme3(){
+		<% if (!data[3]) { %>
+			document.getElementById("idofpictochoose").value = "";
+		<% } else { %>
+			document.getElementById("idofpictochoose").value = "<%= data[3].id %>";
+		<% } %>
+	}
+	function chooseme4(){
+		<% if (!data[4]) { %>
+			document.getElementById("idofpictochoose").value = "";
+		<% } else { %>
+			document.getElementById("idofpictochoose").value = "<%= data[4].id %>";
+		<% } %>
+	}
+	</script>
+	<script type="text/javascript" src="js/socket.js"></script>
