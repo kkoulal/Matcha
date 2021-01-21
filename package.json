@@ -39,7 +39,7 @@
   "retext": "^7.0.1",
   "retext-emoji": "^6.0.0",
   "serve-favicon": "^2.5.0",
-  "socket.io": "^2.3.0",
+  "socket.io": "^2.4.0",
   "store": "^2.0.12"
  }
 }
